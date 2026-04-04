@@ -609,6 +609,28 @@ jobs:
 
             sed -i '/KMI_SYMBOL_LIST_STRICT_MODE/d' common/build.config.gki.aarch64
 
+            # bugfix
+            echo "=== 开始修复上游代码冲突 ==="
+            # 1. 修复 supercall.h 中的 MAGIC1 重定义错误
+            # 使用 perl 只替换第二次出现的 KSU_INSTALL_MAGIC1 为 MAGIC2 (0xCAFEBABE)
+            FILE_SUPERCALL="common/drivers/kernelsu/include/uapi/supercall.h"
+            if [ -f "$FILE_SUPERCALL" ]; then
+              perl -pi -e 's/KSU_INSTALL_MAGIC1, 0xDEADBEEF/KSU_INSTALL_MAGIC2, 0xCAFEBABE/ if $c++ == 1' "$FILE_SUPERCALL"
+              echo "✅ 修复 $FILE_SUPERCALL 完成"
+            else
+              echo "❌ 找不到 $FILE_SUPERCALL"
+            fi
+            # 2. 修复 sucompat.c 中的函数重定义错误
+            # 将带有 __maybe_unused 的废弃函数重命名为 dummy_ 函数，避免与 191 行的真函数冲突
+            FILE_SUCOMPAT="common/drivers/kernelsu/feature/sucompat.c"
+            if [ -f "$FILE_SUCOMPAT" ]; then
+              sed -i 's/int __maybe_unused ksu_handle_devpts/int __maybe_unused dummy_ksu_handle_devpts/g' "$FILE_SUCOMPAT"
+              echo "✅ 修复 $FILE_SUCOMPAT 完成"
+            else
+              echo "❌ 找不到 $FILE_SUCOMPAT"
+            fi
+            echo "=== 修复完毕，准备执行编译 ==="
+
             echo "Building the kernel..."
             if [ -f "build/build.sh" ]; then
               LTO=thin BUILD_CONFIG=common/build.config.gki.aarch64 build/build.sh CC="/usr/bin/ccache clang" || exit 1
