@@ -71,7 +71,7 @@ jobs:
           if [ "${{ inputs.kernelsu_variant }}" == "Next" ]; then
             DOWNLOAD_URL=$(echo "$ARTIFACTS" | jq -r '.artifacts[] | select(.name | contains("Manager")) | .archive_download_url')
           elif [ "${{ inputs.kernelsu_variant }}" == "SukiSU" ]; then
-            DOWNLOAD_URL=$(echo "$ARTIFACTS" | jq -r '.artifacts[] | select(.name | contains("Manager")) | .archive_download_url')
+            DOWNLOAD_URL=$(echo "$ARTIFACTS" | jq -r '.artifacts[] | select(.name | contains("manager")) | .archive_download_url')
           fi
 
           # 下载 Manager 文件
