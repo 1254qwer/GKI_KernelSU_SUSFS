@@ -612,10 +612,12 @@ jobs:
             # bugfix
             echo "=== 开始修复上游代码冲突 ==="
             # 1. 修复 supercall.h 中的 MAGIC1 重定义错误
-            # 使用 perl 只替换第二次出现的 KSU_INSTALL_MAGIC1 为 MAGIC2 (0xCAFEBABE)
             FILE_SUPERCALL="common/drivers/kernelsu/include/uapi/supercall.h"
             if [ -f "$FILE_SUPERCALL" ]; then
-              perl -pi -e 's/KSU_INSTALL_MAGIC1, 0xDEADBEEF/KSU_INSTALL_MAGIC2, 0xCAFEBABE/ if $c++ == 1' "$FILE_SUPERCALL"
+              # 将第 17 行的 MAGIC1 改为 MAGIC2
+              sed -i '17s/KSU_INSTALL_MAGIC1/KSU_INSTALL_MAGIC2/' "$FILE_SUPERCALL"
+              # 将第 17 行的 0xDEADBEEF 改为 0xCAFEBABE
+              sed -i '17s/0xDEADBEEF/0xCAFEBABE/' "$FILE_SUPERCALL"
               echo "✅ 修复 $FILE_SUPERCALL 完成"
             else
               echo "❌ 找不到 $FILE_SUPERCALL"
