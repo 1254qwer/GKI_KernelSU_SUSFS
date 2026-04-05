@@ -585,7 +585,7 @@ jobs:
           # 如果你想使用北京时间应为:CURRENT_TIME="Sat Jun 07 14:29:29 CST 2025"
           if [ ! -z "${{ inputs.buildtime }}" ]; then
             echo "编译时间不为空"
-            CURRENT_TIME=${{ inputs.buildtime }}
+            CURRENT_TIME="${{ inputs.buildtime }}"
           else
             echo "编译时间为空，使用默认值"
             CURRENT_TIME=$(date -u +"%a %b %d %H:%M:%S UTC %Y")
