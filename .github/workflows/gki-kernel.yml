@@ -37,6 +37,9 @@ on:
       version:
         required: false
         type: string
+      buildtime:
+        required: false
+        type: string
       use_zram:
         required: true
         type: boolean
