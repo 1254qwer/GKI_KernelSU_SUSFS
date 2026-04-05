@@ -18,6 +18,10 @@ on:
         required: true
         type: string
         default: Stable
+      sub_level_spoof:
+        required: false
+        type: string
+        default: ""
       version:
         required: false
         type: string
@@ -62,6 +66,7 @@ jobs:
       os_patch_level: ${{ matrix.os_patch_level }}
       kernelsu_variant: ${{ inputs.kernelsu_variant || 'Next' }}
       kernelsu_branch: ${{ inputs.kernelsu_branch || 'Dev' }}
+      sub_level_spoof: ${{ inputs.sub_level_spoof || '' }}
       version: ${{ inputs.version || '' }}
       buildtime: ${{ inputs.buildtime || '' }}
       use_zram: ${{ inputs.use_zram }}

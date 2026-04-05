@@ -34,6 +34,9 @@ on:
       revision:
         required: false
         type: string
+      sub_level_spoof:
+        required: false
+        type: string
       version:
         required: false
         type: string
@@ -561,6 +564,14 @@ jobs:
           echo "更改为配置目录: $CONFIG..."
           cd "$CONFIG"
           
+          SPOOF_SUB="${{ inputs.sub_level_spoof }}"
+          if [ ! -z "$SPOOF_SUB" ]; then
+            echo "检测到 SUBLEVEL 伪装请求: $SPOOF_SUB"
+            sed -i "s/^SUBLEVEL = .*/SUBLEVEL = $SPOOF_SUB/" ./common/Makefile
+          else
+            echo "未提供 SUBLEVEL 伪装，保持源码默认值"
+          fi
+
           if [ ! -z ${{ inputs.version }} ]; then
             echo "版本号不为空"
             sed -i '$s|echo "\$res"|echo "${{ inputs.version }}"|' ./common/scripts/setlocalversion

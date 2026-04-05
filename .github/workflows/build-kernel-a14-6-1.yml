@@ -26,6 +26,10 @@ on:
           - Dev(开发)
           - Other(其他/指定)
         default: Dev(开发)
+      sub_level_spoof:
+        description: '自定义SUBLEVEL/留空则使用默认版本号'
+        required: false
+        type: string
       version:
         description: '自定义版本名(如6.1.93后面的字符/留空则使用默认版本号)'
         required: false
@@ -65,6 +69,7 @@ jobs:
       make_release: false
       kernelsu_variant: ${{ inputs.kernelsu_variant }}
       kernelsu_branch: ${{ inputs.kernelsu_branch }}
+      sub_level_spoof: ${{ inputs.sub_level_spoof }}
       version: ${{ inputs.version }}
       buildtime: ${{ inputs.buildtime }}
       use_zram: ${{ inputs.use_zram }}
