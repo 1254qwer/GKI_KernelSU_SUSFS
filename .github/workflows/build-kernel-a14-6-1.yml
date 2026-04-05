@@ -30,7 +30,12 @@ on:
         description: '自定义版本名(如6.1.93后面的字符/留空则使用默认版本号)'
         required: false
         type: string
-        default: "-android14-11-ga2521ca27699-ab13294383"
+        default: "-android14-11-g6ab8c9a86a33-ab14396278"
+      buildtime:
+        description: '自定义构建时间(留空则使用默认构建时间)'
+        required: false
+        type: string
+        default: "Wed Nov  5 15:47:39 UTC 2025"
       use_zram:
         description: '是否开启增加更多ZRAM算法?'
         required: true
@@ -61,6 +66,7 @@ jobs:
       kernelsu_variant: ${{ inputs.kernelsu_variant }}
       kernelsu_branch: ${{ inputs.kernelsu_branch }}
       version: ${{ inputs.version }}
+      buildtime: ${{ inputs.buildtime }}
       use_zram: ${{ inputs.use_zram }}
       use_kpm: ${{ inputs.use_kpm }}
       BBG: ${{ inputs.BBG }}
