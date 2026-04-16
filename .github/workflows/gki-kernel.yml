@@ -297,8 +297,6 @@ jobs:
 
           echo "Applying SUSFS patches..."
 
-          sed -i '/^diff --git a\/fs\/namespace\.c/,/^diff --git/ s/ #include "internal.h"/ #include "internal.h"\n #include <trace\/hooks\/blk.h>/' ../susfs4ksu/kernel_patches/50_add_susfs_in_gki-${{ inputs.android_version }}-${{ inputs.kernel_version }}.patch
-
           # Copy SUSFS patches
           cp ../susfs4ksu/kernel_patches/50_add_susfs_in_gki-${{ inputs.android_version }}-${{ inputs.kernel_version }}.patch ./common/
           cp ../susfs4ksu/kernel_patches/fs/* ./common/fs/
@@ -351,7 +349,9 @@ jobs:
             curl -LSs https://github.com/zzh20188/GKI_KernelSU_SUSFS/raw/refs/heads/legacy/fdinfo.c.patch -o fdinfo.c.patch
             patch -p1 < fdinfo.c.patch
           else
+            sed -i '/#include <trace\/hooks\/blk.h>/d' fs/namespace.c || true
             patch -p1 --fuzz=3 < 50_add_susfs_in_gki-${{ inputs.android_version }}-${{ inputs.kernel_version }}.patch || true
+            sed -i '/#include "internal.h"/a #include <trace\/hooks\/blk.h>' fs/namespace.c || true
           fi
 
       - name: 一些修复补丁
