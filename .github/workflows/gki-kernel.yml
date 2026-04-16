@@ -697,6 +697,11 @@ jobs:
             else
               echo "❌ 找不到 $FILE_SUCOMPAT"
             fi
+            # 修复 SukiSU 上游合并失误导致的孤立宏
+            FILE_ALLOWLIST="common/drivers/kernelsu/policy/allowlist.c"
+            if [ -f "$FILE_ALLOWLIST" ]; then
+              sed -i 's/^#endif/\/\/ #endif \/* 修复上游未匹配的宏 *\//' "$FILE_ALLOWLIST"
+            fi
             echo "=== 修复完毕，准备执行编译 ==="
 
             echo "Building the kernel..."
