@@ -294,7 +294,7 @@ jobs:
 
           echo "Applying SUSFS patches..."
 
-          sed -i '/#include "internal.h"/a\ #include <trace/hooks/blk.h>' ../susfs4ksu/kernel_patches/50_add_susfs_in_gki-${{ inputs.android_version }}-${{ inputs.kernel_version }}.patch
+          sed -i '/#include "pnode.h"/{N;s/ #include "internal.h"/ #include "internal.h"\n #include <trace\/hooks\/blk.h>/}' ../susfs4ksu/kernel_patches/50_add_susfs_in_gki-${{ inputs.android_version }}-${{ inputs.kernel_version }}.patch
 
           # Copy SUSFS patches
           cp ../susfs4ksu/kernel_patches/50_add_susfs_in_gki-${{ inputs.android_version }}-${{ inputs.kernel_version }}.patch ./common/
